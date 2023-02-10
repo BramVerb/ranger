@@ -2015,6 +2015,7 @@ class yank(Command):
         'name': 'basename',
         'dir': 'dirname',
         'path': 'path',
+        'contents': 'contents',
     }
 
     def execute(self):
@@ -2058,6 +2059,8 @@ class yank(Command):
                 process.communicate(input=new_clipboard_contents)
 
     def get_selection_attr(self, attr):
+        if attr == 'contents':
+            return [open(item.path, 'r').read() for item in self.fm.thistab.get_selection() if item.is_file]
         return [getattr(item, attr) for item in
                 self.fm.thistab.get_selection()]
 
